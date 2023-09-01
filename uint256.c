@@ -9,16 +9,24 @@
 // all other bits are set to 0.
 UInt256 uint256_create_from_u32(uint32_t val) {
   UInt256 result;
-  // TODO: implement
+  for (int i = 0; i < 8; i++) {
+    if (i > 0) {
+      result.data[i] = (uint32_t) 0;
+    } else {
+      result.data[i] = val;
+    }
+  }
   return result;
 }
 
 // Create a UInt256 value from an array of NWORDS uint32_t values.
 // The element at index 0 is the least significant, and the element
-// at index 3 is the most significant.
+// at index 7 is the most significant.
 UInt256 uint256_create(const uint32_t data[8]) {
   UInt256 result;
-  // TODO: implement
+  for (int i = 0; i < 8; i++) {
+    result.data[i] = data[i];
+  }
   return result;
 }
 
@@ -38,7 +46,7 @@ char *uint256_format_as_hex(UInt256 val) {
 }
 
 // Get 32 bits of data from a UInt256 value.
-// Index 0 is the least significant 32 bits, index 3 is the most
+// Index 0 is the least significant 32 bits, index 7 is the most
 // significant 32 bits.
 uint32_t uint256_get_bits(UInt256 val, unsigned index) {
   uint32_t bits;
