@@ -36,7 +36,23 @@ UInt256 uint256_create(const uint32_t data[8]) {
 // MS2
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
-  // TODO: implement
+  int length = strlen(&hex);
+  if (length <= 64) {
+    for (int i = 0; i <= length/8; i++) {
+      char *temp = NULL;
+      if (length > 8) {
+        strncpy(temp, hex, 8);
+        char *temp2 = NULL;
+        strtoul(temp, &temp2, 6);
+      } else {
+        strncpy(temp, hex, length);
+        char *temp2 = NULL;
+        strtoul(temp, &temp2, 6);
+      }
+    }
+  } else {
+
+  }
   return result;
 }
 
@@ -63,7 +79,19 @@ uint32_t uint256_get_bits(UInt256 val, unsigned index) {
 // MS2
 UInt256 uint256_add(UInt256 left, UInt256 right) {
   UInt256 sum;
-  // TODO: implement
+  uint32_t overflow = 0;
+  for (int i = 0; i < 8; i++) {
+    uint32_t left_temp = left.data[i];
+    uint32_t right_temp = right.data[i];
+    uint32_t sum_temp = left_temp + right_temp + overflow;
+    if (sum_temp < left_temp) {
+      overflow = 1;
+    } else {
+      overflow = 0;
+    }
+
+    sum.data[i] = sum_temp;
+  }
   return sum;
 }
 
@@ -79,7 +107,17 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
 // MS2
 UInt256 uint256_negate(UInt256 val) {
   UInt256 result;
-  // TODO: implement
+  for (int i = 0; i < 8; i++) {
+    uint32_t temp = result.data[i];
+    if (temp == 0) {
+      result.data[i] = 1;
+    } else {
+      result.data[i] = 0;
+    }
+  } 
+
+  result.data[8] = 1;
+  // result = uint256_add(result, );
   return result;
 }
 
