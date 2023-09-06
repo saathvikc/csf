@@ -99,7 +99,9 @@ UInt256 uint256_add(UInt256 left, UInt256 right) {
 // MS2
 UInt256 uint256_sub(UInt256 left, UInt256 right) {
   UInt256 result;
-  // TODO: implement
+  UInt256 left_negate = uint256_negate(left);
+  result = uint256_add(left_negate, right);
+  
   return result;
 }
 
@@ -107,17 +109,23 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
 // MS2
 UInt256 uint256_negate(UInt256 val) {
   UInt256 result;
+  
+  // for (int i = 0; i < 8; i++) {
+  //   if (i > 0) {
+  //     adding.data[i] = 0;
+  //   } else {
+  //     adding.data[i] = 1;
+  //   }
+  // }
+
   for (int i = 0; i < 8; i++) {
-    uint32_t temp = result.data[i];
-    if (temp == 0) {
-      result.data[i] = 1;
-    } else {
-      result.data[i] = 0;
-    }
+    uint32_t temp = val.data[i];
+    temp = ~temp;
+    result.data[i] = temp;
   } 
 
-  result.data[8] = 1;
-  // result = uint256_add(result, );
+  UInt256 one = uint256_create_from_u32((uint32_t) 1);
+  result = uint256_add(result, one);
   return result;
 }
 
