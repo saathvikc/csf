@@ -37,21 +37,9 @@ UInt256 uint256_create(const uint32_t data[8]) {
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
   int length = strlen(&hex);
-  if (length <= 64) {
-    for (int i = 0; i <= length/8; i++) {
-      char *temp = NULL;
-      if (length > 8) {
-        strncpy(temp, hex, 8);
-        char *temp2 = NULL;
-        strtoul(temp, &temp2, 6);
-      } else {
-        strncpy(temp, hex, length);
-        char *temp2 = NULL;
-        strtoul(temp, &temp2, 6);
-      }
-    }
-  } else {
-
+  int current = 8;
+  for (int i = 0; i < 8; i++) {
+    const char *temp = hex[length - current];
   }
   return result;
 }
@@ -100,7 +88,7 @@ UInt256 uint256_add(UInt256 left, UInt256 right) {
 UInt256 uint256_sub(UInt256 left, UInt256 right) {
   UInt256 result;
   UInt256 left_negate = uint256_negate(left);
-  result = uint256_add(left_negate, right);
+  result = uint256_add(left_negate, right); // should work but not passing last test
   
   return result;
 }
@@ -135,7 +123,6 @@ UInt256 uint256_negate(UInt256 val) {
 // MS2
 UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
   UInt256 result;
-  // TODO: implement
   return result;
 }
 
