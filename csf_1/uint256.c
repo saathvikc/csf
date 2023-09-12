@@ -37,10 +37,18 @@ UInt256 uint256_create(const uint32_t data[8]) {
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
   int length = strlen(&hex);
-  int current = 8;
+  uint32_t digit = 0;
+  int dist = length - 8;
+  char temp[9];
+
   for (int i = 0; i < 8; i++) {
-    const char *temp = hex[length - current];
+    strncpy(temp, hex + dist, 8);
+    temp[9] = '\0';
+    strtoul(temp, digit, 6);
+    result.data[i] = digit;
+    dist-=8;
   }
+  
   return result;
 }
 
@@ -123,6 +131,7 @@ UInt256 uint256_negate(UInt256 val) {
 // MS2
 UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
   UInt256 result;
+  
   return result;
 }
 
