@@ -95,9 +95,14 @@ UInt256 uint256_add(UInt256 left, UInt256 right) {
 // MS2
 UInt256 uint256_sub(UInt256 left, UInt256 right) {
   UInt256 result;
-  UInt256 left_negate = uint256_negate(left);
-  result = uint256_add(left_negate, right); // should work but not passing last test
-  
+  UInt256 right_negate = uint256_negate(right);
+  // for (int i = 0; i < 8; i++) {
+  //   if (left.data[i] > right.data[i]) {
+
+  //   }
+  // }
+  result = uint256_add(left, right_negate); // should work but not passing last test
+
   return result;
 }
 

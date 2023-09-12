@@ -207,10 +207,17 @@ void test_sub(TestObjs *objs) {
   result = uint256_sub(objs->zero, objs->zero);
   ASSERT_SAME(objs->zero, result);
 
+  result = uint256_sub(objs->one, objs->zero);
+  ASSERT_SAME(objs->one, result);
+
   result = uint256_sub(objs->one, objs->one);
+  for (int i = 0; i < 8; i++) {
+    printf("%d", result.data[i]);
+  }
   ASSERT_SAME(objs->zero, result);
 
   result = uint256_sub(objs->zero, objs->one);
+  
   ASSERT_SAME(objs->max, result);
 }
 
