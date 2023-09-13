@@ -36,7 +36,7 @@ UInt256 uint256_create(const uint32_t data[8]) {
 // MS2
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
-  int length = strlen(&hex);
+  int length = strlen(hex);
   uint32_t digit = 0;
   int dist = length - 8;
   char temp[9];
@@ -80,7 +80,7 @@ UInt256 uint256_add(UInt256 left, UInt256 right) {
     uint32_t left_temp = left.data[i];
     uint32_t right_temp = right.data[i];
     uint32_t sum_temp = left_temp + right_temp + overflow;
-    if (sum_temp < left_temp) {
+    if (sum_temp < left_temp || sum_temp < right_temp) {
       overflow = 1;
     } else {
       overflow = 0;
@@ -102,6 +102,8 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
   //   }
   // }
   result = uint256_add(left, right_negate); // should work but not passing last test
+  // UInt256 left_negate = uint256_negate(left);
+  // result = uint256_add(left_negate, right);
 
   return result;
 }
@@ -121,7 +123,9 @@ UInt256 uint256_negate(UInt256 val) {
 
   for (int i = 0; i < 8; i++) {
     uint32_t temp = val.data[i];
+    // printf("%d", temp);
     temp = ~temp;
+    // printf("%d", temp);
     result.data[i] = temp;
   } 
 
