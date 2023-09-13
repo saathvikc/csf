@@ -36,17 +36,37 @@ UInt256 uint256_create(const uint32_t data[8]) {
 // MS2
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
-  int length = strlen(hex);
-  uint32_t digit = 0;
-  int dist = length - 8;
-  char temp[9];
 
-  for (int i = 0; i < 8; i++) {
-    strncpy(temp, hex + dist, 8);
-    temp[9] = '\0';
-    strtoul(temp, digit, 6);
-    result.data[i] = digit;
-    dist-=8;
+   for (int j = 0; j < 8; j++) {
+    result.data[j] = (uint32_t) 0;
+  }
+
+  int length = strlen(hex);
+  uint32_t digit;
+  char temp[9];
+  // if (length >= 8) {
+    // int dist = length - 8;
+
+    // for (int i = 0; i < 8; i++) {
+    //   strncpy(temp, hex + dist, 8);
+    //   // for (int j = 0; j < 9; j++) {
+    //   //   printf("%d", temp[j]);
+    //   // }
+    //   temp[9] = '\0';
+    //   digit = strtoul(temp, temp, 6);
+    //   printf("%d", digit);
+    //   result.data[i] = digit;
+    //   dist-=8;
+    // }
+  // } else {
+    digit = strtoul(&hex, &hex + length, 6);
+    // printf("%d", digit);
+    result.data[0] = digit;
+  // }
+
+
+  for (int j = 0; j < 8; j++) {
+    printf("%d", result.data[j]);
   }
   
   return result;
@@ -57,7 +77,14 @@ UInt256 uint256_create_from_hex(const char *hex) {
 // MS2
 char *uint256_format_as_hex(UInt256 val) {
   char *hex = NULL;
-  // TODO: implement
+  uint32_t temp;
+  char str[8];
+  for (int i = 0; i < 8; i++) {
+    temp = val.data[i];
+    sprintf(str, "%x", temp);
+    char* hex = (char*) malloc (8 * sizeof(char));
+    strcat(hex, str);
+  }
   return hex;
 }
 
@@ -96,14 +123,7 @@ UInt256 uint256_add(UInt256 left, UInt256 right) {
 UInt256 uint256_sub(UInt256 left, UInt256 right) {
   UInt256 result;
   UInt256 right_negate = uint256_negate(right);
-  // for (int i = 0; i < 8; i++) {
-  //   if (left.data[i] > right.data[i]) {
-
-  //   }
-  // }
-  result = uint256_add(left, right_negate); // should work but not passing last test
-  // UInt256 left_negate = uint256_negate(left);
-  // result = uint256_add(left_negate, right);
+  result = uint256_add(left, right_negate);
 
   return result;
 }
@@ -112,20 +132,9 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
 // MS2
 UInt256 uint256_negate(UInt256 val) {
   UInt256 result;
-  
-  // for (int i = 0; i < 8; i++) {
-  //   if (i > 0) {
-  //     adding.data[i] = 0;
-  //   } else {
-  //     adding.data[i] = 1;
-  //   }
-  // }
-
   for (int i = 0; i < 8; i++) {
     uint32_t temp = val.data[i];
-    // printf("%d", temp);
     temp = ~temp;
-    // printf("%d", temp);
     result.data[i] = temp;
   } 
 
