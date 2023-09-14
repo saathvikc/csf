@@ -34,7 +34,7 @@ UInt256 uint256_create(const uint32_t data[8]) {
 
 // Create a UInt256 value from a string of hexadecimal digits.
 // MS2
-UInt256 uint256_create_from_hex(const char *hex) {
+UInt256 uint256_create_from_hex(const char *hex) { // tests passed but needs more work
   UInt256 result;
   char *ptr;
 
@@ -43,32 +43,23 @@ UInt256 uint256_create_from_hex(const char *hex) {
   }
 
   int length = strlen(hex);
-  uint32_t digit;
+  uint32_t digit = (uint32_t) 0;
  
   if (length >= 8) {
     int dist = length - 8;
     char temp[9];
 
     for (int i = 0; i < 8; i++) {
-      memset(temp, '\0', sizeof(temp));
+      // memset(temp, '\0', sizeof(temp));
       strncpy(temp, hex + dist, 8);
-      // printf("%s", temp);
-      digit = strtoul(temp, &ptr, 6);
-      printf("%d", digit);
+      digit = strtoul(temp, &ptr, 16);
       result.data[i] = digit;
       dist-=8;
     }
   } else {
-    
-    digit = strtoul(hex, &ptr, 6);
-    printf("%d", digit);
+    digit = strtoul(hex, &ptr, 16);
     result.data[0] = digit;
   }
-
-
-  // for (int j = 0; j < 8; j++) {
-  //   printf("%d", result.data[j]);
-  // }
   
   return result;
 }

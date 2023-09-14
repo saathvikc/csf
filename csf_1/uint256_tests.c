@@ -156,17 +156,19 @@ void test_create(TestObjs *objs) {
 }
 
 void test_create_from_hex(TestObjs *objs) {
-  // UInt256 zero = uint256_create_from_hex("0");
-  // ASSERT_SAME(objs->zero, zero);
+  UInt256 zero = uint256_create_from_hex("0");
+  ASSERT_SAME(objs->zero, zero);
 
-  // UInt256 one = uint256_create_from_hex("1");
-  // ASSERT_SAME(objs->one, one);
+  UInt256 one = uint256_create_from_hex("1");
+  ASSERT_SAME(objs->one, one);
 
   UInt256 max = uint256_create_from_hex("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-  // for (int i = 0; i < 8; i++) {
-  //   printf("%d", max.data[i]);
-  // }
   ASSERT_SAME(objs->max, max);
+
+  UInt256 test = uint256_create_from_hex("fffffffff");
+  for (int i = 0; i < 8; i++) {
+    printf("%d\n", test.data[i]);
+  }
 }
 
 void test_format_as_hex(TestObjs *objs) {
