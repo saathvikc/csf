@@ -36,38 +36,39 @@ UInt256 uint256_create(const uint32_t data[8]) {
 // MS2
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
+  char *ptr;
 
-   for (int j = 0; j < 8; j++) {
+  for (int j = 0; j < 8; j++) {
     result.data[j] = (uint32_t) 0;
   }
 
   int length = strlen(hex);
   uint32_t digit;
-  char temp[9];
-  // if (length >= 8) {
-    // int dist = length - 8;
+ 
+  if (length >= 8) {
+    int dist = length - 8;
+    char temp[9];
 
-    // for (int i = 0; i < 8; i++) {
-    //   strncpy(temp, hex + dist, 8);
-    //   // for (int j = 0; j < 9; j++) {
-    //   //   printf("%d", temp[j]);
-    //   // }
-    //   temp[9] = '\0';
-    //   digit = strtoul(temp, temp, 6);
-    //   printf("%d", digit);
-    //   result.data[i] = digit;
-    //   dist-=8;
-    // }
-  // } else {
-    digit = strtoul(&hex, &hex + length, 6);
-    // printf("%d", digit);
+    for (int i = 0; i < 8; i++) {
+      memset(temp, '\0', sizeof(temp));
+      strncpy(temp, hex + dist, 8);
+      // printf("%s", temp);
+      digit = strtoul(temp, &ptr, 6);
+      printf("%d", digit);
+      result.data[i] = digit;
+      dist-=8;
+    }
+  } else {
+    
+    digit = strtoul(hex, &ptr, 6);
+    printf("%d", digit);
     result.data[0] = digit;
-  // }
-
-
-  for (int j = 0; j < 8; j++) {
-    printf("%d", result.data[j]);
   }
+
+
+  // for (int j = 0; j < 8; j++) {
+  //   printf("%d", result.data[j]);
+  // }
   
   return result;
 }
@@ -149,7 +150,9 @@ UInt256 uint256_negate(UInt256 val) {
 // MS2
 UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
   UInt256 result;
-  
+  for (int i = 0; i < 8; i++) {
+    result.data[i + nbits] = val.data[i];
+   }
   return result;
 }
 
