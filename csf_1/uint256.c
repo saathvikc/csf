@@ -174,20 +174,32 @@ UInt256 uint256_rotate_right(UInt256 val, unsigned nbits) {
     unsigned mask;
     mask = (1 << nbits) - 1;
     lastXbits = val.data[0] & mask;
-    // printf("%d", lastXbits);
+    printf("%d", lastXbits);
   }
 
   for (unsigned i = 0; i < nbits; i++) {
     unsigned mask;
     mask = (1 << nbits) - 1;
     lastYbits = val.data[7] & mask;
-    //printf("%d", lastYbits);
+    // printf("%d", lastYbits); 
   }
 
   result.data[7] |= lastXbits << 31;
-  result.data[0] |= lastYbits << 31;
+  
+  
+  for (int j = 6; j >= 0; j--) {
+    lastXbits = lastYbits;
+    
+    for (unsigned i = 0; i < nbits; i++) {
+      unsigned mask;
+      mask = (1 << nbits) - 1;
+      lastYbits = val.data[j] & mask;
+      // printf("%d", lastYbits);
+    }
+    result.data[j] |= lastXbits << 31;
+  }
 
-  // printf("%d", result.data[8]);
+  // printf("%d", result.data[0]);
 
   // for (int i = 0; i < 8; i++) {
   //   printf("%d", result.data[i]);
