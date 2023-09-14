@@ -49,7 +49,7 @@ UInt256 uint256_create_from_hex(const char *hex) { // tests passed but needs mor
     int dist = length - 8;
     char temp[9];
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 7; i >= 0; i--) {
       // memset(temp, '\0', sizeof(temp));
       strncpy(temp, hex + dist, 8);
       digit = strtoul(temp, &ptr, 16);
@@ -68,15 +68,21 @@ UInt256 uint256_create_from_hex(const char *hex) { // tests passed but needs mor
 // given UInt256 value.
 // MS2
 char *uint256_format_as_hex(UInt256 val) {
-  char *hex = NULL;
-  uint32_t temp;
-  char str[8];
-  for (int i = 0; i < 8; i++) {
-    temp = val.data[i];
-    sprintf(str, "%x", temp);
-    char* hex = (char*) malloc (8 * sizeof(char));
-    strcat(hex, str);
+  char *hex = (char*) malloc (9 * sizeof(char));
+  
+  for (int i = 7; i >= 0; i--) {
+    sprintf(hex, "%x", val.data[i]);
+    // printf("%d", val.data[i]);
+    // printf("%s\n", str);
+    // if (0 != strcmp("0", str)) {
+    //   strcat(hex, str);
+    // } else if (i == 0) {
+    //   strcat(hex, str);
+    // }
   }
+
+  hex[9] = '\0';
+  printf("%s", hex);
   return hex;
 }
 
