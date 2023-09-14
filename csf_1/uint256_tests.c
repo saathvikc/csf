@@ -266,8 +266,11 @@ void test_rotate_right(TestObjs *objs) {
 
   // rotating 1 right by 1 position should result in a value with just
   // the most-significant bit set
-  // result = uint256_rotate_right(objs->one, 1);
-  // ASSERT_SAME(objs->msb_set, result);
+  result = uint256_rotate_right(objs->one, 1);
+  for (int i = 0; i < 8; i++) {
+    printf("%d\n", objs->msb_set.data[i]);
+  }
+  ASSERT_SAME(objs->msb_set, result);
 
   // after rotating the "rot" value right by 4 bits, the resulting value should be
   //   BCD00000 00000000 00000000 00000000 00000000 00000000 00000000 0000000A
