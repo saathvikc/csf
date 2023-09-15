@@ -36,7 +36,7 @@ UInt256 uint256_create(const uint32_t data[8]) {
 // MS2
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
-  char *ptr;
+  char *ptr = '\0';
 
   for (int j = 0; j < 8; j++) {
     result.data[j] = (uint32_t) 0;
@@ -48,9 +48,9 @@ UInt256 uint256_create_from_hex(const char *hex) {
   if (length >= 8) {
     int dist = length - 8;
     char temp[9];
+    memset(temp, '\0', 9);
 
     for (int i = 7; i >= 0; i--) {
-      // memset(temp, '\0', sizeof(temp));
       if (dist < 8) {
         strncpy(temp, hex + dist, dist);
       } else {
