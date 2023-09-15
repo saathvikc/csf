@@ -68,21 +68,29 @@ UInt256 uint256_create_from_hex(const char *hex) { // tests passed but needs mor
 // given UInt256 value.
 // MS2
 char *uint256_format_as_hex(UInt256 val) {
-  char *hex = (char*) malloc (9 * sizeof(char));
+  char *hex = (char*) malloc (65 * sizeof(char));
+  char *str = (char*) malloc (9 * sizeof(char));
   
+  memset(hex, '\0', 65);
   for (int i = 7; i >= 0; i--) {
-    sprintf(hex, "%x", val.data[i]);
+    memset(str, '\0', 9);
+    sprintf(str, "%x", val.data[i]);
+    // printf("%s\n", str);
     // printf("%d", val.data[i]);
     // printf("%s\n", str);
-    // if (0 != strcmp("0", str)) {
-    //   strcat(hex, str);
-    // } else if (i == 0) {
-    //   strcat(hex, str);
-    // }
+    if (0 != strcmp("0", str)) {
+      strcat(hex, str);
+      // printf("%s\n", hex);
+    } else if (i == 0) {
+      strcat(hex, str);
+    }
+    
   }
-
-  hex[9] = '\0';
-  printf("%s", hex);
+  
+  
+  free (str);
+  // strcat(hex, '\0');
+  printf("%s\n", hex);
   return hex;
 }
 
@@ -164,46 +172,41 @@ UInt256 uint256_rotate_right(UInt256 val, unsigned nbits) {
   UInt256 result;
 
   for (int i = 0; i < 8; i++) {
-    result.data[i] = 0;
+    result.data[i] = val.data[i];
   }
 
   unsigned lastXbits;
   unsigned lastYbits;
 
-  for (unsigned i = 0; i < nbits; i++) {
-    unsigned mask;
-    mask = (1 << nbits) - 1;
-    lastXbits = val.data[0] & mask;
-    printf("%d", lastXbits);
-  }
+  unsigned mask;
+  mask = (1 << nbits) - 1;
+  lastXbits = val.data[0] & mask;
+  // printf("%d", lastXbits);
 
-  for (unsigned i = 0; i < nbits; i++) {
-    unsigned mask;
-    mask = (1 << nbits) - 1;
-    lastYbits = val.data[7] & mask;
-    // printf("%d", lastYbits); 
-  }
-
+  mask = (1 << nbits) - 1;
+  lastYbits = val.data[7] & mask;
+  // printf("%d", lastYbits); 
+  
   result.data[7] |= lastXbits << 31;
-  
-  
-  for (int j = 6; j >= 0; j--) {
-    lastXbits = lastYbits;
-    
-    for (unsigned i = 0; i < nbits; i++) {
-      unsigned mask;
-      mask = (1 << nbits) - 1;
-      lastYbits = val.data[j] & mask;
-      // printf("%d", lastYbits);
-    }
-    result.data[j] |= lastXbits << 31;
-  }
-
+  result.data[0] |= lastYbits << 31;
   // printf("%d", result.data[0]);
-
-  // for (int i = 0; i < 8; i++) {
-  //   printf("%d", result.data[i]);
+  // printf("%d", result.data[7]);
+  
+  
+  // for (int j = 6; j >= 0; j--) {
+  //   lastXbits = lastYbits;
+  //   // unsigned mask;
+  //   mask = (1 << nbits) - 1;
+  //   lastYbits = val.data[j] & mask;
+  //   // printf("%d", lastYbits);
+  //   result.data[j] |= lastXbits << 31;
   // }
+
+  //printf("%d", result.data[0]);
+
+  for (int i = 0; i < 8; i++) {
+    printf("%d", result.data[i]);
+  }
 
   return result;
 }

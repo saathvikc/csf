@@ -174,13 +174,13 @@ void test_create_from_hex(TestObjs *objs) {
 void test_format_as_hex(TestObjs *objs) {
   char *s;
 
-  // s = uint256_format_as_hex(objs->zero);
-  // ASSERT(0 == strcmp("0", s));
-  // free(s);
+  s = uint256_format_as_hex(objs->zero);
+  ASSERT(0 == strcmp("0", s));
+  free(s);
 
-  // s = uint256_format_as_hex(objs->one);
-  // ASSERT(0 == strcmp("1", s));
-  // free(s);
+  s = uint256_format_as_hex(objs->one);
+  ASSERT(0 == strcmp("1", s));
+  free(s);
 
   s = uint256_format_as_hex(objs->max);
   ASSERT(0 == strcmp("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", s));
@@ -266,24 +266,21 @@ void test_rotate_right(TestObjs *objs) {
 
   // rotating 1 right by 1 position should result in a value with just
   // the most-significant bit set
-  // result = uint256_rotate_right(objs->one, 1);
-  // // for (int i = 0; i < 8; i++) {
-  // //   printf("%d\n", objs->msb_set.data[i]);
-  // // }
-  // ASSERT_SAME(objs->msb_set, result);
+  result = uint256_rotate_right(objs->one, 1);
+  // for (int i = 0; i < 8; i++) {
+  //   printf("%d\n", objs->msb_set.data[i]);
+  // }
+  ASSERT_SAME(objs->msb_set, result);
 
   // after rotating the "rot" value right by 4 bits, the resulting value should be
   //   BCD00000 00000000 00000000 00000000 00000000 00000000 00000000 0000000A
   result = uint256_rotate_right(objs->rot, 4);
-  // for (int i = 0; i < 8; i++) {
-  //   printf("%d\n", objs->rot.data[i]);
-  // }
-  ASSERT(0x0000000AU == result.data[0]);
+  ASSERT(0x0000000AU == result.data[0]); // 10
   ASSERT(0U == result.data[1]);
   ASSERT(0U == result.data[2]);
   ASSERT(0U == result.data[3]);
   ASSERT(0U == result.data[4]);
   ASSERT(0U == result.data[5]);
   ASSERT(0U == result.data[6]);
-  ASSERT(0xBCD00000U == result.data[7]);
+  ASSERT(0xBCD00000U == result.data[7]); //3167748096  -1127219200
 }
