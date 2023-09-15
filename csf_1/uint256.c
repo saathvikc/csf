@@ -139,7 +139,7 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
   for (int i = 0; i < 8; i++) { 
     if (result.data[i] == (uint32_t) -1) {
       for (int j = 0; j < 8; j++) {
-        result.data[j] = -1;
+        result.data[j] = (uint32_t) -1;
       }
       break;
     }
@@ -169,12 +169,43 @@ UInt256 uint256_negate(UInt256 val) {
 // MS2
 UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
   UInt256 result;
-  for (unsigned i = 0; i < nbits; i++) {
-    unsigned mask;
-    mask = (1 << nbits) - 1;
-    int lastXbits = val.data[0] & mask;
-    printf("%d", lastXbits);
+  for (int i = 0; i < 8; i++) {
+    result.data[i] = val.data[i];
   }
+
+  unsigned lastXbits;
+  unsigned lastYbits;
+
+  unsigned mask;
+  mask = (1 << nbits);
+  lastXbits = val.data[0] & mask;
+  printf("%d", lastXbits);
+
+  mask = (1 << nbits);
+  lastYbits = val.data[7] & mask;
+  printf("%d", lastYbits); 
+  
+  result.data[7] |= lastXbits >> 1;
+  result.data[0] |= lastYbits >> 1;
+  // printf("%d", result.data[0]);
+  // printf("%d", result.data[7]);
+  
+  
+  // for (int j = 6; j >= 0; j--) {
+  //   lastXbits = lastYbits;
+  //   // unsigned mask;
+  //   mask = (1 << nbits) - 1;
+  //   lastYbits = val.data[j] & mask;
+  //   // printf("%d", lastYbits);
+  //   result.data[j] |= lastXbits << 31;
+  // }
+
+  //printf("%d", result.data[0]);
+
+  for (int i = 0; i < 8; i++) {
+    printf("%d", result.data[i]);
+  }
+
   return result;
 }
 
