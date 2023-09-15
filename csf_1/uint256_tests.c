@@ -199,6 +199,7 @@ void test_add(TestObjs *objs) {
   uint32_t two_data[8] = { 2U };
   UInt256 two;
   INIT_FROM_ARR(two, two_data);
+  
   result = uint256_add(objs->one, objs->one);
   ASSERT_SAME(two, result);
 
@@ -208,6 +209,27 @@ void test_add(TestObjs *objs) {
   result = uint256_add(objs->one, objs->max);
   ASSERT_SAME(objs->zero, result);
 
+  // my tests
+
+  uint32_t three_data[8] = { 3U };
+  UInt256 three;
+  INIT_FROM_ARR(three, three_data);
+
+  int32_t five_data[8] = { 5U };
+  UInt256 five;
+  INIT_FROM_ARR(five, five_data);
+
+  result = uint256_add(objs->max, objs->zero);
+  ASSERT_SAME(objs->max, result);
+
+  result = uint256_add(objs->zero, objs->max);
+  ASSERT_SAME(objs->max, result);
+
+  result = uint256_add(two, objs->one);
+  ASSERT_SAME(three, result);
+
+  result = uint256_add(two, three);
+  ASSERT_SAME(five, result);
 }
 
 void test_sub(TestObjs *objs) {
@@ -224,10 +246,53 @@ void test_sub(TestObjs *objs) {
 
   result = uint256_sub(objs->zero, objs->one);
   ASSERT_SAME(objs->max, result);
+
+  // my tests
+
+  result = uint256_sub(objs->max, objs->zero);
+  ASSERT_SAME(objs->max, result);
+
+  result = uint256_sub(objs->zero, objs->max);
+  ASSERT_SAME(objs->one, result);
+
+  uint32_t two_data[8] = { 2U };
+  UInt256 two;
+  INIT_FROM_ARR(two, two_data);
+
+  uint32_t three_data[8] = { 3U };
+  UInt256 three;
+  INIT_FROM_ARR(three, three_data);
+
+  result = uint256_sub(two, objs->one);
+  ASSERT_SAME(objs->one, result);
+
+  result = uint256_sub(three, two);
+  ASSERT_SAME(objs->one, result);
+
+  result = uint256_sub(two, objs->zero);
+  ASSERT_SAME(two, result);
+
+  // checks if subtracting to get negative values returns max value
+
+  result = uint256_sub(objs->one, two);
+  ASSERT_SAME(objs->max, result);
+
+  result = uint256_sub(objs->one, three);
+  ASSERT_SAME(objs->max, result);
+
+  result = uint256_sub(two, three);
+  ASSERT_SAME(objs->max, result);
+  
+  result = uint256_sub(objs->zero, two);
+  ASSERT_SAME(objs->max, result);
+
+  result = uint256_sub(objs->zero, three);
+  ASSERT_SAME(objs->max, result);
 }
 
 void test_negate(TestObjs *objs) {
   UInt256 result;
+  UInt256 temp;
 
   result = uint256_negate(objs->zero);
   ASSERT_SAME(objs->zero, result);
@@ -237,6 +302,22 @@ void test_negate(TestObjs *objs) {
 
   result = uint256_negate(objs->max);
   ASSERT_SAME(objs->one, result);
+
+  // my tests
+  
+  temp = uint256_add(objs->one, objs->zero); // check to see if negate works properly after an addition
+  result = uint256_negate(temp);
+  ASSERT_SAME(objs->max, result);
+
+  temp = uint256_sub(objs->max, objs->zero); // check to see if negate works properly after a subtraction
+  result = uint256_negate(temp);
+  ASSERT_SAME(objs->one, result);
+
+  temp = uint256_negate(objs->one); // check to see if negating twice returns the original value
+  ASSERT_SAME(objs->max, temp);
+  result = uint256_negate(temp);
+  ASSERT_SAME(objs->one, result);
+
 }
 
 void test_rotate_left(TestObjs *objs) {

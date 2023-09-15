@@ -34,7 +34,7 @@ UInt256 uint256_create(const uint32_t data[8]) {
 
 // Create a UInt256 value from a string of hexadecimal digits.
 // MS2
-UInt256 uint256_create_from_hex(const char *hex) { // tests passed but needs more work
+UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
   char *ptr;
 
@@ -51,7 +51,11 @@ UInt256 uint256_create_from_hex(const char *hex) { // tests passed but needs mor
 
     for (int i = 7; i >= 0; i--) {
       // memset(temp, '\0', sizeof(temp));
-      strncpy(temp, hex + dist, 8);
+      if (dist < 8) {
+        strncpy(temp, hex + dist, dist);
+      } else {
+        strncpy(temp, hex + dist, 8);
+      }
       digit = strtoul(temp, &ptr, 16);
       result.data[i] = digit;
       dist-=8;
@@ -130,6 +134,16 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
   UInt256 result;
   UInt256 right_negate = uint256_negate(right);
   result = uint256_add(left, right_negate);
+
+  // returns max if any value gives a negative (cannot be represented)
+  for (int i = 0; i < 8; i++) { 
+    if (result.data[i] == (uint32_t) -1) {
+      for (int j = 0; j < 8; j++) {
+        result.data[j] = -1;
+      }
+      break;
+    }
+  }
 
   return result;
 }
