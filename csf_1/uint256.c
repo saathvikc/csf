@@ -79,12 +79,8 @@ char *uint256_format_as_hex(UInt256 val) {
   for (int i = 7; i >= 0; i--) {
     memset(str, '\0', 9);
     sprintf(str, "%x", val.data[i]);
-    // printf("%s\n", str);
-    // printf("%d", val.data[i]);
-    // printf("%s\n", str);
     if (0 != strcmp("0", str)) {
       strcat(hex, str);
-      // printf("%s\n", hex);
     } else if (i == 0) {
       strcat(hex, str);
     }
@@ -93,8 +89,6 @@ char *uint256_format_as_hex(UInt256 val) {
   
   
   free (str);
-  // strcat(hex, '\0');
-  printf("%s\n", hex);
   return hex;
 }
 

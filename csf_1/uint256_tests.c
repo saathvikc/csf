@@ -7,6 +7,8 @@
 typedef struct {
   UInt256 zero; // the value equal to 0
   UInt256 one;  // the value equal to 1
+  UInt256 two; // teh value equal to 2
+  UInt256 eighteen; // the value equal to 18
   UInt256 max;  // the value equal to (2^256)-1
   UInt256 msb_set; // the value equal to 2^255
   UInt256 rot; // value used to test rotations
@@ -84,6 +86,10 @@ TestObjs *setup(void) {
   set_all(&objs->zero, 0);
   set_all(&objs->one, 0);
   objs->one.data[0] = 1U;
+  set_all(&objs->two, 0);
+  objs->two.data[0] = 2U;
+  set_all(&objs->eighteen, 0);
+  objs->eighteen.data[0] = 0x12U;
   set_all(&objs->max, 0xFFFFFFFFU);
 
   // create a value with only the most-significant bit set
@@ -138,6 +144,20 @@ void test_create_from_u32(TestObjs *objs) {
 
   ASSERT_SAME(objs->zero, zero);
   ASSERT_SAME(objs->one, one);
+
+  // my tests
+
+  UInt256 two = uint256_create_from_u32(2U);
+  UInt256 five = uint256_create_from_u32(5U);
+  UInt256 eighteen = uint256_create_from_u32(18U);
+
+  int32_t five_data[8] = { 5U };
+  UInt256 five_test;
+  INIT_FROM_ARR(five_test, five_data);
+
+  ASSERT_SAME(objs->two, two);
+  ASSERT_SAME(five_test, five);
+  ASSERT_SAME(objs->eighteen, eighteen);
 }
 
 void test_create(TestObjs *objs) {
@@ -153,6 +173,17 @@ void test_create(TestObjs *objs) {
   ASSERT(6U == val1.data[5]);
   ASSERT(7U == val1.data[6]);
   ASSERT(8U == val1.data[7]);
+
+  uint32_t data2[8] = { 0xCU, 0xAU, 7U, 4U, 18U, 5U, 0x12U, 8U };
+  UInt256 val2 = uint256_create(data2);
+  ASSERT(12U == val2.data[0]);
+  ASSERT(10U == val2.data[1]);
+  ASSERT(7U == val2.data[2]);
+  ASSERT(4U == val2.data[3]);
+  ASSERT(18U == val2.data[4]);
+  ASSERT(5U == val2.data[5]);
+  ASSERT(18U == val2.data[6]);
+  ASSERT(8U == val2.data[7]);
 }
 
 void test_create_from_hex(TestObjs *objs) {
@@ -165,10 +196,13 @@ void test_create_from_hex(TestObjs *objs) {
   UInt256 max = uint256_create_from_hex("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
   ASSERT_SAME(objs->max, max);
 
-  // UInt256 test = uint256_create_from_hex("fffffffff");
-  // for (int i = 0; i < 8; i++) {
-  //   printf("%d\n", test.data[i]);
-  // }
+  // my tests 
+
+  UInt256 two = uint256_create_from_hex("2");
+  ASSERT_SAME(objs->two, two);
+
+  UInt256 eighteen = uint256_create_from_hex("12");
+  ASSERT_SAME(objs->eighteen, eighteen);
 }
 
 void test_format_as_hex(TestObjs *objs) {
@@ -185,6 +219,15 @@ void test_format_as_hex(TestObjs *objs) {
   s = uint256_format_as_hex(objs->max);
   ASSERT(0 == strcmp("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", s));
   free(s);
+
+  // my tests
+  s = uint256_format_as_hex(objs->two);
+  ASSERT(0 == strcmp("2", s));
+  free(s);
+
+  s = uint256_format_as_hex(objs->eighteen);
+  ASSERT(0 == strcmp("12", s));
+  free(s);
 }
 
 void test_add(TestObjs *objs) {
@@ -195,13 +238,9 @@ void test_add(TestObjs *objs) {
 
   result = uint256_add(objs->zero, objs->one);
   ASSERT_SAME(objs->one, result);
-
-  uint32_t two_data[8] = { 2U };
-  UInt256 two;
-  INIT_FROM_ARR(two, two_data);
   
   result = uint256_add(objs->one, objs->one);
-  ASSERT_SAME(two, result);
+  ASSERT_SAME(objs->two, result);
 
   result = uint256_add(objs->max, objs->one);
   ASSERT_SAME(objs->zero, result);
@@ -225,10 +264,10 @@ void test_add(TestObjs *objs) {
   result = uint256_add(objs->zero, objs->max);
   ASSERT_SAME(objs->max, result);
 
-  result = uint256_add(two, objs->one);
+  result = uint256_add(objs->two, objs->one);
   ASSERT_SAME(three, result);
 
-  result = uint256_add(two, three);
+  result = uint256_add(objs->two, three);
   ASSERT_SAME(five, result);
 }
 
@@ -255,35 +294,31 @@ void test_sub(TestObjs *objs) {
   result = uint256_sub(objs->zero, objs->max);
   ASSERT_SAME(objs->one, result);
 
-  uint32_t two_data[8] = { 2U };
-  UInt256 two;
-  INIT_FROM_ARR(two, two_data);
-
   uint32_t three_data[8] = { 3U };
   UInt256 three;
   INIT_FROM_ARR(three, three_data);
 
-  result = uint256_sub(two, objs->one);
+  result = uint256_sub(objs->two, objs->one);
   ASSERT_SAME(objs->one, result);
 
-  result = uint256_sub(three, two);
+  result = uint256_sub(three, objs->two);
   ASSERT_SAME(objs->one, result);
 
-  result = uint256_sub(two, objs->zero);
-  ASSERT_SAME(two, result);
+  result = uint256_sub(objs->two, objs->zero);
+  ASSERT_SAME(objs->two, result);
 
   // checks if subtracting to get negative values returns max value
 
-  result = uint256_sub(objs->one, two);
+  result = uint256_sub(objs->one, objs->two);
   ASSERT_SAME(objs->max, result);
 
   result = uint256_sub(objs->one, three);
   ASSERT_SAME(objs->max, result);
 
-  result = uint256_sub(two, three);
+  result = uint256_sub(objs->two, three);
   ASSERT_SAME(objs->max, result);
   
-  result = uint256_sub(objs->zero, two);
+  result = uint256_sub(objs->zero, objs->two);
   ASSERT_SAME(objs->max, result);
 
   result = uint256_sub(objs->zero, three);
