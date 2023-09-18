@@ -35,12 +35,23 @@ uint32_t wc_hash(const unsigned char *w) {
 // of the other, it is considered as "less than". E.g.,
 // "hi" would compare as less than "high".
 int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs) {
-  // TODO: implement
+  if (lhs < rhs) {
+    return -1;
+  } else if (lhs > rhs) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 // Copy NUL-terminated source string to the destination buffer.
 void wc_str_copy(unsigned char *dest, const unsigned char *source) {
-  // TODO: implement
+  int i = 0;
+
+  while (source[i] != '\0') {
+    dest[i] = source[i];
+    i++;
+  }
 }
 
 // Return 1 if the character code in c is a whitespace character,
