@@ -55,13 +55,21 @@ void wc_str_copy(unsigned char *dest, const unsigned char *source) {
 //   '\f'
 //   '\v'
 int wc_isspace(unsigned char c) {
-  // TODO: implement
+  if (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\f' || c == '\v') {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 // Return 1 if the character code in c is an alphabetic character
 // ('A' through 'Z' or 'a' through 'z'), 0 otherwise.
 int wc_isalpha(unsigned char c) {
-  // TODO: implement
+  if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 // Read the next word from given input stream, storing
