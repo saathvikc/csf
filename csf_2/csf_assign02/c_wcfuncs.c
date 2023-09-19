@@ -21,7 +21,15 @@
 // Note that the character values should be treated as
 // being unsigned (in the range 0..255)
 uint32_t wc_hash(const unsigned char *w) {
-  // TODO: implement
+  uint32_t hash_code = 5381;
+  int i = 0;
+
+  while (w[i] != '\0') {
+    hash_code = hash_code * 33 + w[i];
+    i++;
+  }
+
+  return hash_code;
 }
 
 // Compare two strings lexicographically. Return
@@ -101,13 +109,23 @@ int wc_readnext(FILE *in, unsigned char *w) {
 // Convert the NUL-terminated character string in the array
 // pointed-to by w so that every letter is lower-case.
 void wc_tolower(unsigned char *w) {
-  // TODO: implement
+  for (int i = 0; w[i] != '\0'; i++) {
+    if (w[i] >= 'A' && w[i] <= 'Z') {
+      w[i] = w[i] + 32;
+    }
+  }
 }
 
 // Remove any non-alphaabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
 void wc_trim_non_alpha(unsigned char *w) {
-  // TODO: implement
+  unsigned char *temp = '\0';
+
+  for (int i = 0; w[i] != '\0'; i++) {
+    if (wc_isalpha(w[i]) == 0) {
+      
+    }
+  }
 }
 
 // Search the specified linked list of WordEntry objects for an object
