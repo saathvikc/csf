@@ -199,6 +199,7 @@ void test_trim_non_alpha(TestObjs *objs) {
   strcpy((char *) buf, (const char *) objs->test_str_3);
   ASSERT(0 == strcmp("O_O...", (const char *) buf));
   wc_trim_non_alpha(buf);
+  printf("\n%s\n", buf);
   ASSERT(0 == strcmp("O_O", (const char *) buf));
 }
 

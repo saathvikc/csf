@@ -20,7 +20,7 @@
 //
 // Note that the character values should be treated as
 // being unsigned (in the range 0..255)
-uint32_t wc_hash(const unsigned char *w) {
+uint32_t wc_hash(const unsigned char *w) {  // done
   uint32_t hash_code = 5381;
   int i = 0;
 
@@ -42,7 +42,7 @@ uint32_t wc_hash(const unsigned char *w) {
 // order, but using character codes. If one string is a prefix
 // of the other, it is considered as "less than". E.g.,
 // "hi" would compare as less than "high".
-int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs) {
+int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs) {  // done
   if (lhs < rhs) {
     return -1;
   } else if (lhs > rhs) {
@@ -53,7 +53,7 @@ int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs) {
 }
 
 // Copy NUL-terminated source string to the destination buffer.
-void wc_str_copy(unsigned char *dest, const unsigned char *source) {
+void wc_str_copy(unsigned char *dest, const unsigned char *source) {  // done
   int i = 0;
 
   while (source[i] != '\0') {
@@ -73,7 +73,7 @@ void wc_str_copy(unsigned char *dest, const unsigned char *source) {
 //   '\n'
 //   '\f'
 //   '\v'
-int wc_isspace(unsigned char c) {
+int wc_isspace(unsigned char c) { // done
   if (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\f' || c == '\v') {
     return 1;
   } else {
@@ -83,7 +83,7 @@ int wc_isspace(unsigned char c) {
 
 // Return 1 if the character code in c is an alphabetic character
 // ('A' through 'Z' or 'a' through 'z'), 0 otherwise.
-int wc_isalpha(unsigned char c) {
+int wc_isalpha(unsigned char c) { // done
   if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
     return 1;
   } else {
@@ -103,12 +103,24 @@ int wc_isalpha(unsigned char c) {
 // MAX_WORDLEN characters, then only the first MAX_WORDLEN
 // characters in the sequence should be stored in the array.
 int wc_readnext(FILE *in, unsigned char *w) {
-  // TODO: implement
+  unsigned char* temp;
+  if (fscanf(in, "%s", temp)) {
+    printf("\n%s\n", temp);
+    // int i = 0;
+    // while (w[i] != '\0') {
+    //   i++;
+    // }
+
+    // w[i] = *temp;
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 // Convert the NUL-terminated character string in the array
 // pointed-to by w so that every letter is lower-case.
-void wc_tolower(unsigned char *w) {
+void wc_tolower(unsigned char *w) {  // done
   for (int i = 0; w[i] != '\0'; i++) {
     if (w[i] >= 'A' && w[i] <= 'Z') {
       w[i] = w[i] + 32;
@@ -116,16 +128,24 @@ void wc_tolower(unsigned char *w) {
   }
 }
 
-// Remove any non-alphaabetic characters from the end of the
+// Remove any non-alphabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
 void wc_trim_non_alpha(unsigned char *w) {
-  unsigned char *temp = '\0';
+  // unsigned char *temp;
+  int j = 0;
 
-  for (int i = 0; w[i] != '\0'; i++) {
-    if (wc_isalpha(w[i]) == 0) {
-      
-    }
+  while (w[j] != '\0') {
+    j++;
   }
+
+  for (int i = j; j > 0; j--) {
+    printf("\n%d\n", w[i]);
+    if (wc_isalpha(w[i]) == 0) {
+      w[i] = '\0';
+    }
+  } 
+
+  // wc_str_copy(w, temp);
 }
 
 // Search the specified linked list of WordEntry objects for an object
