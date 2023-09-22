@@ -132,36 +132,21 @@ void wc_tolower(unsigned char *w) {  // done
 // Remove any non-alphabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
 void wc_trim_non_alpha(unsigned char *w) {
-  unsigned char *temp;
+  int i = 6;
 
-  for (int i = 0; i < 6; i++) {
-    printf("\n%d\n", w[i]);
-  }
-
-  temp[0] = 79;
-  temp[1] = 95;
-  temp[2] = 79;
-  temp[3] = '\0';
-  // temp[3] = 46;
-  // temp[4] = 46;
-  // temp[5] = 46;
-
-  // while (w[j] != '\0') {
-  //   // printf("\n%s\n", w[j]);
-  //   j++;
+  // while (*w) {
+  //   i++;
+  //   w++;
   // }
 
-  // for (int i = j; j > 0; j--) {
-  //   printf("\n%d\n", w[i]);
-  //   if (wc_isalpha(w[i]) == 0) {
-  //     printf("\n%s\n", w[i]);
-  //     w[i] = '\0';
-  //   }
-  // } 
+  while (i >= 0) {
+    if ((w[i] < 65 || w[i] > 122)) {
+      printf("\n%d\n", w[i]);
+      w[i] = '\0';
+    }
+    i--;
+  }
 
-
-  wc_str_copy(temp, w);
-  printf("\n%s\n", w);
 }
 
 // Search the specified linked list of WordEntry objects for an object
