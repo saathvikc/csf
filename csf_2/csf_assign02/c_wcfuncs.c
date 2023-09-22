@@ -106,6 +106,7 @@ int wc_readnext(FILE *in, unsigned char *w) {
   unsigned char* temp;
   if (fscanf(in, "%s", temp)) {
     printf("\n%s\n", temp);
+    
     // int i = 0;
     // while (w[i] != '\0') {
     //   i++;
@@ -131,21 +132,36 @@ void wc_tolower(unsigned char *w) {  // done
 // Remove any non-alphabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
 void wc_trim_non_alpha(unsigned char *w) {
-  // unsigned char *temp;
-  int j = 0;
+  unsigned char *temp;
 
-  while (w[j] != '\0') {
-    j++;
+  for (int i = 0; i < 6; i++) {
+    printf("\n%d\n", w[i]);
   }
 
-  for (int i = j; j > 0; j--) {
-    printf("\n%d\n", w[i]);
-    if (wc_isalpha(w[i]) == 0) {
-      w[i] = '\0';
-    }
-  } 
+  temp[0] = 79;
+  temp[1] = 95;
+  temp[2] = 79;
+  temp[3] = '\0';
+  // temp[3] = 46;
+  // temp[4] = 46;
+  // temp[5] = 46;
 
-  // wc_str_copy(w, temp);
+  // while (w[j] != '\0') {
+  //   // printf("\n%s\n", w[j]);
+  //   j++;
+  // }
+
+  // for (int i = j; j > 0; j--) {
+  //   printf("\n%d\n", w[i]);
+  //   if (wc_isalpha(w[i]) == 0) {
+  //     printf("\n%s\n", w[i]);
+  //     w[i] = '\0';
+  //   }
+  // } 
+
+
+  wc_str_copy(temp, w);
+  printf("\n%s\n", w);
 }
 
 // Search the specified linked list of WordEntry objects for an object
