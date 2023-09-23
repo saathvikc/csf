@@ -131,17 +131,11 @@ void wc_tolower(unsigned char *w) {  // done
 
 // Remove any non-alphabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
-void wc_trim_non_alpha(unsigned char *w) {
-  int i = 6;
-
-  // while (*w) {
-  //   i++;
-  //   w++;
-  // }
+void wc_trim_non_alpha(unsigned char *w) {  // needs more testing
+  int i = sizeof(w);
 
   while (i >= 0) {
     if ((w[i] < 65 || w[i] > 122)) {
-      printf("\n%d\n", w[i]);
       w[i] = '\0';
     }
     i--;
@@ -165,24 +159,24 @@ struct WordEntry *wc_find_or_insert(struct WordEntry *head, const unsigned char 
   struct WordEntry* n = head;
   struct WordEntry* temp = NULL;
   if (head != NULL) {
-    temp = head->next;
+    temp = head->next; 
   }
-  unsigned char *t = s;
+  // unsigned char *t = s;
   while (n != NULL) {
     if (wc_str_compare(n->word, s) == 0) {
       *inserted = 0;
       return n;
     }
     n = n->next;
-  }
+  }  
 
   // n = head->next;
-  struct WordEntry* new = NULL;
-  // new->count = (uint32_t) 0;
-  // new->next = temp;
-  head->next = new;
+  struct WordEntry* n2 = {0};
+  // n2->count = (uint32_t) 0;
+  // n2->next = temp;
+  // head->next = n2;
   *inserted = 1;
-  return new;
+  return n2;
 
 }
 

@@ -9,6 +9,7 @@ typedef struct {
   const unsigned char *test_str_2;
   const unsigned char *test_str_3;
   const unsigned char *test_str_4;
+  const unsigned char *test_str_5;
 
   const unsigned char *test_str_1_copy;
 
@@ -68,6 +69,7 @@ TestObjs *setup(void) {
   objs->test_str_2 = (const unsigned char *) "This is A SeNtEnCe with_MiXeD cASe.";
   objs->test_str_3 = (const unsigned char *) "O_O...";
   objs->test_str_4 = (const unsigned char *) "hello, world";
+  objs->test_str_5 = (const unsigned char *) "ar..)";
 
   objs->test_str_1_copy = (const unsigned char *) "hello";
 
@@ -195,16 +197,19 @@ void test_tolower(TestObjs *objs) {
 
 void test_trim_non_alpha(TestObjs *objs) {
   unsigned char buf[256];
+  unsigned char buf2[256];
+  
 
   strcpy((char *) buf, (const char *) objs->test_str_3);
   ASSERT(0 == strcmp("O_O...", (const char *) buf));
-  // for (int i = 0; i < strlen(buf); i++) {
-  //   printf("\n%d\n", buf[i]);
-  // }
   wc_trim_non_alpha(buf);
-  
-  // printf("\n%s\n", buf);
   ASSERT(0 == strcmp("O_O", (const char *) buf));
+
+  strcpy((char *) buf2, (const char *) objs->test_str_5);
+  ASSERT(0 == strcmp("ar..)", (const char *) buf2));
+  wc_trim_non_alpha(buf2);
+  printf("\n%s\n", buf2);
+  ASSERT(0 == strcmp("ar", (const char *) buf2));
 }
 
 void test_find_or_insert(TestObjs *objs) {
@@ -216,6 +221,7 @@ void test_find_or_insert(TestObjs *objs) {
   struct WordEntry *p;
 
   p = wc_find_or_insert(list, (const unsigned char *) "avis", &inserted);
+  // printf("%d", p->count);
   ASSERT(1 == inserted);
   list = p;
   ASSERT(p != NULL);
