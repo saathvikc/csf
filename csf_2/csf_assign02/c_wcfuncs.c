@@ -54,12 +54,13 @@ int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs) {  // don
 
 // Copy NUL-terminated source string to the destination buffer.
 void wc_str_copy(unsigned char *dest, const unsigned char *source) {  // done
-  int i = 0;
+  int i;
 
-  while (source[i] != '\0') {
+  for (i = 0; source[i] != '\0'; i++) {
     dest[i] = source[i];
-    i++;
   }
+
+  dest[i] = '\0';
 }
 
 // Return 1 if the character code in c is a whitespace character,
@@ -103,20 +104,29 @@ int wc_isalpha(unsigned char c) { // done
 // MAX_WORDLEN characters, then only the first MAX_WORDLEN
 // characters in the sequence should be stored in the array.
 int wc_readnext(FILE *in, unsigned char *w) {
-  unsigned char* temp;
-  if (fscanf(in, "%s", temp)) {
-    printf("\n%s\n", temp);
-    
-    // int i = 0;
-    // while (w[i] != '\0') {
-    //   i++;
-    // }
+  unsigned char* temp = 0;
+  // fgets(temp, MAX_WORDLEN, in);
+  
+  // if (in != NULL) {
+  fscanf(in, "%s", temp);
+  // puts(temp);
+  printf("\n%s\n", temp);
+  wc_str_copy(w, temp);
+  printf("\n%s\n", w); 
+  //   return 1;
+  // } else {
+  //   return 0;
+  // }
 
-    // w[i] = *temp;
-    return 1;
-  } else {
-    return 0;
-  }
+  return 1;
+
+  // if (temp != EOF) {
+  //   printf("\n%s\n", temp);
+  //   return 1;
+  // } else {
+  //   return 0;
+  // }
+
 }
 
 // Convert the NUL-terminated character string in the array
@@ -132,9 +142,9 @@ void wc_tolower(unsigned char *w) {  // done
 // Remove any non-alphabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
 void wc_trim_non_alpha(unsigned char *w) { 
-  int i = sizeof(w);
-  while (w[i] == 0) { // get to the start of the non null characters in the string
-    i--;
+  int i = 0;
+  while (w[i] != '\0') { // get to the end of the string
+    i++;
   }
    
   if ((w[i] < 65 || w[i] > 122)) {  // only get rid of the non-alphabetic characters if they're at the end
