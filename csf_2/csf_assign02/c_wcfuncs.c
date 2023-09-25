@@ -131,14 +131,24 @@ void wc_tolower(unsigned char *w) {  // done
 
 // Remove any non-alphabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
-void wc_trim_non_alpha(unsigned char *w) {  // needs more testing
+void wc_trim_non_alpha(unsigned char *w) { 
   int i = sizeof(w);
+  printf("\n%d\n", i);
+  printf("\n%d\n", w[i]);
 
-  while (i >= 0) {
-    if ((w[i] < 65 || w[i] > 122)) {
-      w[i] = '\0';
-    }
+  while (w[i] == 0) {
     i--;
+  }
+  
+  if ((w[i] < 65 || w[i] > 122)) {
+    while (i >= 0) {
+      printf("\n%d\n", w[i]);
+      if ((w[i] < 65 || w[i] > 122)) {
+        // printf("\n%d\n", w[i]);
+        w[i] = 0;
+      }
+      i--;
+    }
   }
 
 }
