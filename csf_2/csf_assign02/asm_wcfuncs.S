@@ -57,7 +57,7 @@ wc_hash:
  */
 	.globl wc_str_compare
 wc_str_compare:
-	/* TODO: implement */
+	// MS1
 	ret
 
 /*
@@ -89,7 +89,8 @@ wc_str_copy:
  */
 	.globl wc_isspace
 wc_isspace:
-	/* TODO: implement */
+	// MS1
+	
 	ret
 
 /*
@@ -101,7 +102,7 @@ wc_isspace:
  */
 	.globl wc_isalpha
 wc_isalpha:
-	/* TODO: implement */
+	// MS1
 	ret
 
 /*
