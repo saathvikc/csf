@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -g -no-pie
 
 # Executables to build
-EXES = hello
+EXES = myCountToNIncr countToNIncr
 
 % : %.S
 	$(CC) $(CFLAGS) $*.S -o $@
